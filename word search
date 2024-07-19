@@ -1,0 +1,37 @@
+class Solution(object):
+    def exist(self, board, word):
+        """
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        self.B = board
+
+        
+        def checkPath(cell, suffix):
+
+            if len(suffix) == 0:
+                return True
+            
+            if (not (0 <= cell[0] < R and 0 <= cell[1] < C) or 
+                (self.B[cell[0]][cell[1]]) == "#" or self.B[cell[0]][cell[1]] != suffix[0] ): # if char is not matching
+                return False
+
+            tmp_char = self.B[cell[0]][cell[1]]
+            self.B[cell[0]][cell[1]] = "#"
+            
+            ret = (checkPath((cell[0] + (1), cell[1] + 0), suffix[1:]) or 
+                    checkPath((cell[0] + (-1), cell[1] + 0), suffix[1:]) or 
+                    checkPath((cell[0] + 0, cell[1] + (-1)), suffix[1:]) or 
+                    checkPath((cell[0] + 0, cell[1] + (1)), suffix[1:]))
+                
+            self.B[cell[0]][cell[1]] = tmp_char
+            return ret
+
+            
+        R, C, W = len(board), len(board[0]), len(word)
+        for r in range(R):
+            for c in range(C):
+                if checkPath((r,c), word):
+                    return True
+        return False
