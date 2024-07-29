@@ -1,0 +1,25 @@
+   int j = 0;
+        for (int i = 0; i < n; i++) {
+            if (arr[i] <= 0) {
+                std::swap(arr[i], arr[j]);
+                j++;
+            }
+        }
+        
+        // Step 2: Mark the elements in the remaining positive part of the array.
+        for (int i = j; i < n; i++) {
+            int num = abs(arr[i]);
+            if (num <= n - j && arr[j + num - 1] > 0) {
+                arr[j + num - 1] = -arr[j + num - 1];
+            }
+        }
+        
+        // Step 3: Find the first missing positive number.
+        for (int i = j; i < n; i++) {
+            if (arr[i] > 0) {
+                return i - j + 1;
+            }
+        }
+        
+        // If all indices are marked, the missing number is n-j+1.
+        return n - j + 1;
