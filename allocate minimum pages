@@ -1,0 +1,54 @@
+    // If there are more students than books, allocation is impossible.
+        if (m > n) return -1;
+        
+        long long low = INT_MIN;
+        long long high = 0;
+        
+        // Calculate the sum of all pages and find the maximum pages in a single book.
+        for (int i = 0; i < n; i++) {
+            high += arr[i];
+            if (arr[i] > low) {
+                low = arr[i];
+            }
+        }
+        
+        long long result = -1;
+        
+        // Binary search for the best result.
+        while (low <= high) {
+            long long mid = (low + high) / 2;
+            
+            if (isFeasible(arr, n, m, mid)) {
+                result = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        
+        return result;
+    }
+    
+    // Helper function to check if current mid can be a feasible solution.
+    bool isFeasible(int arr[], int n, int m, long long mid) {
+        int studentsRequired = 1;
+        long long currentSum = 0;
+        
+        for (int i = 0; i < n; i++) {
+            // If current number of pages are greater than mid, then this mid value is not feasible.
+            if (arr[i] > mid) return false;
+            
+            if (currentSum + arr[i] > mid) {
+                // If adding this book to current sum exceeds mid, allocate to next student.
+                studentsRequired++;
+                currentSum = arr[i];
+                
+                // If students required becomes greater than given number of students, return false.
+                if (studentsRequired > m) return false;
+            } else {
+                // Else add the pages to current sum.
+                currentSum += arr[i];
+            }
+        }
+        
+        return true;
