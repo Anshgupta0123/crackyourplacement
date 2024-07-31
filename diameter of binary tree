@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int levelsOfTree(TreeNode* root){
+        if(root==NULL) return 0; 
+        return 1 + max(levelsOfTree(root->left),levelsOfTree(root->right));
+    }
+    void visitNode(TreeNode* root,int &MaxdiaMeter){
+        if(root==NULL) return; 
+        int diaMeter = levelsOfTree(root->left) + levelsOfTree(root->right);
+        MaxdiaMeter=max(diaMeter,MaxdiaMeter);
+        visitNode(root->left,MaxdiaMeter);
+        visitNode(root->right,MaxdiaMeter);
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        int MaxdiaMeter=0;
+        visitNode(root,MaxdiaMeter);
+        return MaxdiaMeter;
+    }
+};
