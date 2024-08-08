@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        int result = 0;
+        unordered_map<string, int> cacheMap;
+        function<int(int, int)> bfs = [&](int i, int j) {
+            if (i >= rows || j >= cols) {
+                return 0;
+            }
+            string key = to_string(i) + "," + to_string(j);
+            if (cacheMap.find(key) == cacheMap.end()) {
+                int down = bfs(i + 1, j);
+                int diag = bfs(i + 1, j + 1);
+                int right = bfs(i, j + 1);
+                cacheMap[key] = 0;
+                if (matrix[i][j] == '1') {
+                    cacheMap[key] = 1 + min({down, diag, right});
+                }
+            }
+            return cacheMap[key];
+        };
+        bfs(0, 0);
+        int maxLen = 0;
+        for (const auto& entry : cacheMap) {
+            maxLen = max(maxLen, entry.second);
+        }
+        return pow(maxLen, 2);
+    }
+};
