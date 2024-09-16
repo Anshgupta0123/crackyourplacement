@@ -1,0 +1,26 @@
+class Solution {
+    public:
+        int timeconvo(string time){
+            int hr = stoi(time.substr(0,2))*60;
+            int min = stoi(time.substr(3,2));
+            return hr +min;
+        }
+        
+        int findMinDifference(vector<string>& timePoints) 
+        {
+    
+            sort(begin(timePoints), end(timePoints));
+            timePoints.push_back(timePoints[0]);
+            int ans = INT_MAX, 
+            n = timePoints.size(), t1, t2;
+            for(int i = 0; i < n - 1; i++)
+            {
+                t1 = timeconvo(timePoints[i]);
+                t2 = timeconvo(timePoints[i + 1]);
+                
+                ans = min(ans, abs(t1 - t2));
+                ans = min(ans, abs(t1- (1440 + t2)));
+            }
+            return ans;
+        }
+    };;
