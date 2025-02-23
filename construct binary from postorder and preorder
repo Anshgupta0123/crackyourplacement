@@ -1,0 +1,28 @@
+class Solution {
+public:
+    TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+        int preIdx = 0, postIdx = 0;
+        stack<TreeNode*> nodes;
+        TreeNode* root = new TreeNode(preorder[preIdx++]);
+        nodes.push(root);
+
+        while(!nodes.empty()) {
+            TreeNode* cur = nodes.top();
+            if(cur->val == postorder[postIdx]) {
+                nodes.pop();
+                postIdx++;
+            } else {
+                TreeNode* child = new TreeNode(preorder[preIdx++]);
+                if(cur->left != NULL) {
+                    cur->right = child;
+                } else {
+                    cur->left = child;
+                }
+                nodes.push(child);
+            }
+        }
+        return root;
+
+        return root;
+    }
+};
